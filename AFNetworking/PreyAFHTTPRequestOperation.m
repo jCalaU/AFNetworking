@@ -1,4 +1,4 @@
-// AFHTTPRequestOperation.m
+// PreyAFHTTPRequestOperation.m
 //
 // Copyright (c) 2011 Gowalla (http://gowalla.com/)
 //
@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFHTTPRequestOperation.h"
+#import "PreyAFHTTPRequestOperation.h"
 #import <objc/runtime.h>
 
 // Workaround for change in imp_implementationWithBlock() with Xcode 4.5
@@ -107,14 +107,14 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 
 #pragma mark -
 
-@interface AFHTTPRequestOperation ()
+@interface PreyAFHTTPRequestOperation ()
 @property (readwrite, nonatomic, strong) NSURLRequest *request;
 @property (readwrite, nonatomic, strong) NSHTTPURLResponse *response;
 @property (readwrite, nonatomic, strong) NSError *HTTPError;
 @property (readwrite, nonatomic, strong) NSRecursiveLock *lock;
 @end
 
-@implementation AFHTTPRequestOperation
+@implementation PreyAFHTTPRequestOperation
 @synthesize HTTPError = _HTTPError;
 @synthesize successCallbackQueue = _successCallbackQueue;
 @synthesize failureCallbackQueue = _failureCallbackQueue;
@@ -145,8 +145,8 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
             [userInfo setValue:self.responseString forKey:NSLocalizedRecoverySuggestionErrorKey];
             [userInfo setValue:[self.request URL] forKey:NSURLErrorFailingURLErrorKey];
-            [userInfo setValue:self.request forKey:AFNetworkingOperationFailingURLRequestErrorKey];
-            [userInfo setValue:self.response forKey:AFNetworkingOperationFailingURLResponseErrorKey];
+            [userInfo setValue:self.request forKey:PreyAFNetworkingOperationFailingURLRequestErrorKey];
+            [userInfo setValue:self.response forKey:PreyAFNetworkingOperationFailingURLResponseErrorKey];
 
             if (![self hasAcceptableStatusCode]) {
                 NSInteger statusCode = ([self.response isKindOfClass:[NSHTTPURLResponse class]]) ? [self.response statusCode] : 200;
@@ -263,10 +263,10 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
     }
 }
 
-- (void)setCompletionBlockWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+- (void)setCompletionBlockWithSuccess:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+                              failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure
 {
-    // completionBlock is manually nilled out in AFURLConnectionOperation to break the retain cycle.
+    // completionBlock is manually nilled out in PreyAFURLConnectionOperation to break the retain cycle.
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
 #pragma clang diagnostic ignored "-Wgnu"
@@ -288,7 +288,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 #pragma clang diagnostic pop
 }
 
-#pragma mark - AFHTTPRequestOperation
+#pragma mark - PreyAFHTTPRequestOperation
 
 + (NSIndexSet *)acceptableStatusCodes {
     return [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)];
@@ -315,7 +315,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 }
 
 + (BOOL)canProcessRequest:(NSURLRequest *)request {
-    if ([[self class] isEqual:[AFHTTPRequestOperation class]]) {
+    if ([[self class] isEqual:[PreyAFHTTPRequestOperation class]]) {
         return YES;
     }
 

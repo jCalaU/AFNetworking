@@ -1,4 +1,4 @@
-// AFURLConnectionOperation.m
+// PreyAFURLConnectionOperation.m
 //
 // Copyright (c) 2011 Gowalla (http://gowalla.com/)
 //
@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFURLConnectionOperation.h"
+#import "PreyAFURLConnectionOperation.h"
 
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
 #import <UIKit/UIKit.h>
@@ -49,11 +49,11 @@ typedef id AFBackgroundTaskIdentifier;
 static NSString * const kAFNetworkingLockName = @"com.alamofire.networking.operation.lock";
 
 NSString * const AFNetworkingErrorDomain = @"AFNetworkingErrorDomain";
-NSString * const AFNetworkingOperationFailingURLRequestErrorKey = @"AFNetworkingOperationFailingURLRequestErrorKey";
-NSString * const AFNetworkingOperationFailingURLResponseErrorKey = @"AFNetworkingOperationFailingURLResponseErrorKey";
+NSString * const PreyAFNetworkingOperationFailingURLRequestErrorKey = @"PreyAFNetworkingOperationFailingURLRequestErrorKey";
+NSString * const PreyAFNetworkingOperationFailingURLResponseErrorKey = @"PreyAFNetworkingOperationFailingURLResponseErrorKey";
 
-NSString * const AFNetworkingOperationDidStartNotification = @"com.alamofire.networking.operation.start";
-NSString * const AFNetworkingOperationDidFinishNotification = @"com.alamofire.networking.operation.finish";
+NSString * const PreyAFNetworkingOperationDidStartNotification = @"com.alamofire.networking.operation.start";
+NSString * const PreyAFNetworkingOperationDidFinishNotification = @"com.alamofire.networking.operation.finish";
 
 typedef void (^AFURLConnectionOperationProgressBlock)(NSUInteger bytes, long long totalBytes, long long totalBytesExpected);
 typedef void (^AFURLConnectionOperationAuthenticationChallengeBlock)(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge);
@@ -129,7 +129,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
 #endif
 }
 
-@interface AFURLConnectionOperation ()
+@interface PreyAFURLConnectionOperation ()
 @property (readwrite, nonatomic, assign) AFOperationState state;
 @property (readwrite, nonatomic, assign, getter = isCancelled) BOOL cancelled;
 @property (readwrite, nonatomic, strong) NSRecursiveLock *lock;
@@ -153,7 +153,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
 - (void)cancelConnection;
 @end
 
-@implementation AFURLConnectionOperation
+@implementation PreyAFURLConnectionOperation
 @synthesize state = _state;
 @synthesize cancelled = _cancelled;
 @synthesize connection = _connection;
@@ -460,7 +460,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-            [notificationCenter postNotificationName:AFNetworkingOperationDidFinishNotification object:self];
+            [notificationCenter postNotificationName:PreyAFNetworkingOperationDidFinishNotification object:self];
         });
     }
     
@@ -529,7 +529,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
     [self.lock unlock];
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingOperationDidStartNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PreyAFNetworkingOperationDidStartNotification object:self];
     });
     
     if ([self isCancelled]) {
@@ -547,7 +547,7 @@ static BOOL AFSecKeyIsEqualToKey(SecKeyRef key1, SecKeyRef key2) {
     self.state = AFOperationFinishedState;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingOperationDidFinishNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PreyAFNetworkingOperationDidFinishNotification object:self];
     });
 }
 
@@ -599,9 +599,9 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
         for (CFIndex i = 0; i < certificateCount; i++) {
             SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, i);
             
-            if (self.SSLPinningMode == AFSSLPinningModeCertificate) {
+            if (self.SSLPinningMode == PreyAFSSLPinningModeCertificate) {
                 [trustChain addObject:(__bridge_transfer NSData *)SecCertificateCopyData(certificate)];
-            } else if (self.SSLPinningMode == AFSSLPinningModePublicKey) {
+            } else if (self.SSLPinningMode == PreyAFSSLPinningModePublicKey) {
                 SecCertificateRef someCertificates[] = {certificate};
                 CFArrayRef certificates = CFArrayCreate(NULL, (const void **)someCertificates, 1, NULL);
                 
@@ -627,9 +627,9 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
         CFRelease(policy);
         
         switch (self.SSLPinningMode) {
-            case AFSSLPinningModePublicKey: {
+            case PreyAFSSLPinningModePublicKey: {
                 NSArray *pinnedPublicKeys = [self.class pinnedPublicKeys];
-                NSAssert([pinnedPublicKeys count] > 0, @"AFSSLPinningModePublicKey needs at least one key file in the application bundle");
+                NSAssert([pinnedPublicKeys count] > 0, @"PreyAFSSLPinningModePublicKey needs at least one key file in the application bundle");
 
                 for (id publicKey in trustChain) {
                     for (id pinnedPublicKey in pinnedPublicKeys) {
@@ -645,8 +645,8 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
                 [[challenge sender] cancelAuthenticationChallenge:challenge];
                 break;
             }
-            case AFSSLPinningModeCertificate: {
-                NSAssert([[self.class pinnedCertificates] count] > 0, @"AFSSLPinningModeCertificate needs at least one certificate file in the application bundle");
+            case PreyAFSSLPinningModeCertificate: {
+                NSAssert([[self.class pinnedCertificates] count] > 0, @"PreyAFSSLPinningModeCertificate needs at least one certificate file in the application bundle");
                 for (id serverCertificateData in trustChain) {
                     if ([[self.class pinnedCertificates] containsObject:serverCertificateData]) {
                         NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
@@ -659,7 +659,7 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
                 [[challenge sender] cancelAuthenticationChallenge:challenge];
                 break;
             }
-            case AFSSLPinningModeNone: {
+            case PreyAFSSLPinningModeNone: {
                 if (self.allowsInvalidSSLCertificate){
                     NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
                     [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
@@ -847,7 +847,7 @@ didReceiveResponse:(NSURLResponse *)response
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    AFURLConnectionOperation *operation = [(AFURLConnectionOperation *)[[self class] allocWithZone:zone] initWithRequest:self.request];
+    PreyAFURLConnectionOperation *operation = [(PreyAFURLConnectionOperation *)[[self class] allocWithZone:zone] initWithRequest:self.request];
     
     operation.uploadProgress = self.uploadProgress;
     operation.downloadProgress = self.downloadProgress;

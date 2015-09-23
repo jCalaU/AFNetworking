@@ -156,7 +156,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
 										 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
     AFImageRequestOperation *requestOperation = [(AFImageRequestOperation *)[self alloc] initWithRequest:urlRequest];
-    [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [requestOperation setCompletionBlockWithSuccess:^(PreyAFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             UIImage *image = responseObject;
             if (imageProcessingBlock) {
@@ -173,7 +173,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
                 success(operation.request, operation.response, image);
             }
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(PreyAFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(operation.request, operation.response, error);
         }
@@ -189,7 +189,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
 										 failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure
 {
     AFImageRequestOperation *requestOperation = [(AFImageRequestOperation *)[self alloc] initWithRequest:urlRequest];
-    [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [requestOperation setCompletionBlockWithSuccess:^(PreyAFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSImage *image = responseObject;
             if (imageProcessingBlock) {
@@ -204,7 +204,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
                 success(operation.request, operation.response, image);
             }
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(PreyAFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(operation.request, operation.response, error);
         }
@@ -267,7 +267,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
 }
 #endif
 
-#pragma mark - AFHTTPRequestOperation
+#pragma mark - PreyAFHTTPRequestOperation
 
 + (NSSet *)acceptableContentTypes {
     return [NSSet setWithObjects:@"image/tiff", @"image/jpeg", @"image/gif", @"image/png", @"image/ico", @"image/x-icon", @"image/bmp", @"image/x-bmp", @"image/x-xbitmap", @"image/x-win-bitmap", nil];
@@ -283,8 +283,8 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
     return [_acceptablePathExtension containsObject:[[request URL] pathExtension]] || [super canProcessRequest:request];
 }
 
-- (void)setCompletionBlockWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+- (void)setCompletionBlockWithSuccess:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+                              failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"

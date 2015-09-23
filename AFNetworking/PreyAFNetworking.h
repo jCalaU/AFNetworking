@@ -1,4 +1,4 @@
-// AFNetworking.h
+// PreyAFNetworking.h
 //
 // Copyright (c) 2011 Gowalla (http://gowalla.com/)
 // 
@@ -26,9 +26,9 @@
 #ifndef _AFNETWORKING_
     #define _AFNETWORKING_
 
-    #import "AFURLConnectionOperation.h"
+    #import "PreyAFURLConnectionOperation.h"
 
-    #import "AFHTTPRequestOperation.h"
+    #import "PreyAFHTTPRequestOperation.h"
     #import "AFJSONRequestOperation.h"
     #import "AFXMLRequestOperation.h"
     #import "AFPropertyListRequestOperation.h"

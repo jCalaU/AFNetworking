@@ -1,4 +1,4 @@
-// AFURLConnectionOperation.h
+// PreyAFURLConnectionOperation.h
 //
 // Copyright (c) 2011 Gowalla (http://gowalla.com/)
 //
@@ -25,7 +25,7 @@
 #import <Availability.h>
 
 /**
- `AFURLConnectionOperation` is a subclass of `NSOperation` that implements `NSURLConnection` delegate methods.
+ `PreyAFURLConnectionOperation` is a subclass of `NSOperation` that implements `NSURLConnection` delegate methods.
 
  ## Subclassing Notes
 
@@ -35,7 +35,7 @@
 
  ## NSURLConnection Delegate Methods
 
- `AFURLConnectionOperation` implements the following `NSURLConnection` delegate methods:
+ `PreyAFURLConnectionOperation` implements the following `NSURLConnection` delegate methods:
 
  - `connection:didReceiveResponse:`
  - `connection:didReceiveData:`
@@ -56,7 +56,7 @@
 
  The built-in `completionBlock` provided by `NSOperation` allows for custom behavior to be executed after the request finishes. It is a common pattern for class constructors in subclasses to take callback block parameters, and execute them conditionally in the body of its `completionBlock`. Make sure to handle cancelled operations appropriately when setting a `completionBlock` (i.e. returning early before parsing response data). See the implementation of any of the `AFHTTPRequestOperation` subclasses for an example of this.
 
- Subclasses are strongly discouraged from overriding `setCompletionBlock:`, as `AFURLConnectionOperation`'s implementation includes a workaround to mitigate retain cycles, and what Apple rather ominously refers to as ["The Deallocation Problem"](http://developer.apple.com/library/ios/#technotes/tn2109/).
+ Subclasses are strongly discouraged from overriding `setCompletionBlock:`, as `PreyAFURLConnectionOperation`'s implementation includes a workaround to mitigate retain cycles, and what Apple rather ominously refers to as ["The Deallocation Problem"](http://developer.apple.com/library/ios/#technotes/tn2109/).
  
  ## SSL Pinning
  
@@ -68,7 +68,7 @@
 
  ## NSCoding & NSCopying Conformance
 
- `AFURLConnectionOperation` conforms to the `NSCoding` and `NSCopying` protocols, allowing operations to be archived to disk, and copied in memory, respectively. However, because of the intrinsic limitations of capturing the exact state of an operation at a particular moment, there are some important caveats to keep in mind:
+ `PreyAFURLConnectionOperation` conforms to the `NSCoding` and `NSCopying` protocols, allowing operations to be archived to disk, and copied in memory, respectively. However, because of the intrinsic limitations of capturing the exact state of an operation at a particular moment, there are some important caveats to keep in mind:
 
  ### NSCoding Caveats
 
@@ -83,12 +83,12 @@
  */
 
 typedef enum {
-    AFSSLPinningModeNone,
-    AFSSLPinningModePublicKey,
-    AFSSLPinningModeCertificate,
+    PreyAFSSLPinningModeNone,
+    PreyAFSSLPinningModePublicKey,
+    PreyAFSSLPinningModeCertificate,
 } AFURLConnectionOperationSSLPinningMode;
 
-@interface AFURLConnectionOperation : NSOperation <NSURLConnectionDelegate,
+@interface PreyAFURLConnectionOperation : NSOperation <NSURLConnectionDelegate,
 #if (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 50000) || \
     (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 1080)
 NSURLConnectionDataDelegate, 
@@ -172,7 +172,7 @@ NSCoding, NSCopying>
 /**
  The pinning mode which will be used for SSL connections. `AFSSLPinningModePublicKey` by default.
  
- SSL Pinning requires that the Security framework is linked with the binary. See the "SSL Pinning" section in the `AFURLConnectionOperation`" header for more information.
+ SSL Pinning requires that the Security framework is linked with the binary. See the "SSL Pinning" section in the `PreyAFURLConnectionOperation`" header for more information.
  */
 @property (nonatomic, assign) AFURLConnectionOperationSSLPinningMode SSLPinningMode;
 
@@ -204,7 +204,7 @@ NSCoding, NSCopying>
 @property (nonatomic, strong) NSDictionary *userInfo;
 
 ///------------------------------------------------------
-/// @name Initializing an AFURLConnectionOperation Object
+/// @name Initializing an PreyAFURLConnectionOperation Object
 ///------------------------------------------------------
 
 /**
@@ -308,7 +308,7 @@ NSCoding, NSCopying>
 /**
  ## SSL Pinning Options
 
- The following constants are provided by `AFURLConnectionOperation` as possible SSL Pinning options.
+ The following constants are provided by `PreyAFURLConnectionOperation` as possible SSL Pinning options.
 
  enum {
  AFSSLPinningModeNone,
@@ -329,15 +329,15 @@ NSCoding, NSCopying>
 
  These keys may exist in the user info dictionary, in addition to those defined for NSError.
 
- - `NSString * const AFNetworkingOperationFailingURLRequestErrorKey`
- - `NSString * const AFNetworkingOperationFailingURLResponseErrorKey`
+ - `NSString * const PreyAFNetworkingOperationFailingURLRequestErrorKey`
+ - `NSString * const PreyAFNetworkingOperationFailingURLResponseErrorKey`
 
  ### Constants
 
- `AFNetworkingOperationFailingURLRequestErrorKey`
+ `PreyAFNetworkingOperationFailingURLRequestErrorKey`
  The corresponding value is an `NSURLRequest` containing the request of the operation associated with an error. This key is only present in the `AFNetworkingErrorDomain`.
 
- `AFNetworkingOperationFailingURLResponseErrorKey`
+ `PreyAFNetworkingOperationFailingURLResponseErrorKey`
  The corresponding value is an `NSURLResponse` containing the response of the operation associated with an error. This key is only present in the `AFNetworkingErrorDomain`.
 
  ## Error Domains
@@ -352,8 +352,8 @@ NSCoding, NSCopying>
  AFNetworking errors. Error codes for `AFNetworkingErrorDomain` correspond to codes in `NSURLErrorDomain`.
  */
 extern NSString * const AFNetworkingErrorDomain;
-extern NSString * const AFNetworkingOperationFailingURLRequestErrorKey;
-extern NSString * const AFNetworkingOperationFailingURLResponseErrorKey;
+extern NSString * const PreyAFNetworkingOperationFailingURLRequestErrorKey;
+extern NSString * const PreyAFNetworkingOperationFailingURLResponseErrorKey;
 
 ///--------------------
 /// @name Notifications
@@ -362,9 +362,9 @@ extern NSString * const AFNetworkingOperationFailingURLResponseErrorKey;
 /**
  Posted when an operation begins executing.
  */
-extern NSString * const AFNetworkingOperationDidStartNotification;
+extern NSString * const PreyAFNetworkingOperationDidStartNotification;
 
 /**
  Posted when an operation finishes.
  */
-extern NSString * const AFNetworkingOperationDidFinishNotification;
+extern NSString * const PreyAFNetworkingOperationDidFinishNotification;

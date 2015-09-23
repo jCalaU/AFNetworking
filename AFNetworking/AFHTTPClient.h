@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "AFURLConnectionOperation.h"
+#import "PreyAFURLConnectionOperation.h"
 
 #import <Availability.h>
 
@@ -75,11 +75,11 @@
 
 #ifdef _SYSTEMCONFIGURATION_H
 typedef enum {
-    AFNetworkReachabilityStatusUnknown          = -1,
-    AFNetworkReachabilityStatusNotReachable     = 0,
-    AFNetworkReachabilityStatusReachableViaWWAN = 1,
-    AFNetworkReachabilityStatusReachableViaWiFi = 2,
-} AFNetworkReachabilityStatus;
+    PreyAFNetworkReachabilityStatusUnknown          = -1,
+    PreyAFNetworkReachabilityStatusNotReachable     = 0,
+    PreyAFNetworkReachabilityStatusReachableViaWWAN = 1,
+    PreyAFNetworkReachabilityStatusReachableViaWiFi = 2,
+} PreyAFNetworkReachabilityStatus;
 #else
 #pragma message("SystemConfiguration framework not found in project, or not included in precompiled header. Network reachability functionality will not be available.")
 #endif
@@ -98,8 +98,8 @@ typedef enum {
     AFPropertyListParameterEncoding,
 } AFHTTPClientParameterEncoding;
 
-@class AFHTTPRequestOperation;
-@protocol AFMultipartFormData;
+@class PreyAFHTTPRequestOperation;
+@protocol PreyAFMultipartFormData;
 
 @interface AFHTTPClient : NSObject <NSCoding, NSCopying>
 
@@ -135,7 +135,7 @@ typedef enum {
  @warning This property requires the `SystemConfiguration` framework. Add it in the active target's "Link Binary With Library" build phase, and add `#import <SystemConfiguration/SystemConfiguration.h>` to the header prefix of the project (`Prefix.pch`).
  */
 #ifdef _SYSTEMCONFIGURATION_H
-@property (readonly, nonatomic, assign) AFNetworkReachabilityStatus networkReachabilityStatus;
+@property (readonly, nonatomic, assign) PreyAFNetworkReachabilityStatus networkReachabilityStatus;
 #endif
 
 /**
@@ -186,7 +186,7 @@ typedef enum {
  @warning This method requires the `SystemConfiguration` framework. Add it in the active target's "Link Binary With Library" build phase, and add `#import <SystemConfiguration/SystemConfiguration.h>` to the header prefix of the project (`Prefix.pch`).
  */
 #ifdef _SYSTEMCONFIGURATION_H
-- (void)setReachabilityStatusChangeBlock:(void (^)(AFNetworkReachabilityStatus status))block;
+- (void)setReachabilityStatusChangeBlock:(void (^)(PreyAFNetworkReachabilityStatus status))block;
 #endif
 
 ///-------------------------------
@@ -300,7 +300,7 @@ typedef enum {
 - (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method
                                                    path:(NSString *)path
                                              parameters:(NSDictionary *)parameters
-                              constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block;
+                              constructingBodyWithBlock:(void (^)(id <PreyAFMultipartFormData> formData))block;
 
 ///-------------------------------
 /// @name Creating HTTP Operations
@@ -315,9 +315,9 @@ typedef enum {
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes two arguments: the created request operation and the object created from the response data of request.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes two arguments:, the created request operation and the `NSError` object describing the network or parsing error that occurred.
  */
-- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
-                                                    success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-                                                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+- (PreyAFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                                    success:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+                                                    failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure;
 
 ///----------------------------------------
 /// @name Managing Enqueued HTTP Operations
@@ -328,7 +328,7 @@ typedef enum {
 
  @param operation The HTTP request operation to be enqueued.
  */
-- (void)enqueueHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
+- (void)enqueueHTTPRequestOperation:(PreyAFHTTPRequestOperation *)operation;
 
 /**
  Cancels all operations in the HTTP client's operation queue whose URLs match the specified HTTP method and path.
@@ -384,8 +384,8 @@ typedef enum {
  */
 - (void)getPath:(NSString *)path
      parameters:(NSDictionary *)parameters
-        success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+        success:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+        failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `POST` request, and enqueues it to the HTTP client's operation queue.
@@ -399,8 +399,8 @@ typedef enum {
  */
 - (void)postPath:(NSString *)path
       parameters:(NSDictionary *)parameters
-         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+         success:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+         failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `PUT` request, and enqueues it to the HTTP client's operation queue.
@@ -414,8 +414,8 @@ typedef enum {
  */
 - (void)putPath:(NSString *)path
      parameters:(NSDictionary *)parameters
-        success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+        success:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+        failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `DELETE` request, and enqueues it to the HTTP client's operation queue.
@@ -429,8 +429,8 @@ typedef enum {
  */
 - (void)deletePath:(NSString *)path
         parameters:(NSDictionary *)parameters
-           success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-           failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+           success:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+           failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates an `AFHTTPRequestOperation` with a `PATCH` request, and enqueues it to the HTTP client's operation queue.
@@ -444,8 +444,8 @@ typedef enum {
  */
 - (void)patchPath:(NSString *)path
        parameters:(NSDictionary *)parameters
-          success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
-          failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+          success:(void (^)(PreyAFHTTPRequestOperation *operation, id responseObject))success
+          failure:(void (^)(PreyAFHTTPRequestOperation *operation, NSError *error))failure;
 @end
 
 ///----------------
@@ -458,22 +458,22 @@ typedef enum {
  The following constants are provided by `AFHTTPClient` as possible network reachability statuses.
 
  enum {
- AFNetworkReachabilityStatusUnknown,
- AFNetworkReachabilityStatusNotReachable,
- AFNetworkReachabilityStatusReachableViaWWAN,
- AFNetworkReachabilityStatusReachableViaWiFi,
+ PreyAFNetworkReachabilityStatusUnknown,
+ PreyAFNetworkReachabilityStatusNotReachable,
+ PreyAFNetworkReachabilityStatusReachableViaWWAN,
+ PreyAFNetworkReachabilityStatusReachableViaWiFi,
  }
 
- `AFNetworkReachabilityStatusUnknown`
+ `PreyAFNetworkReachabilityStatusUnknown`
  The `baseURL` host reachability is not known.
 
- `AFNetworkReachabilityStatusNotReachable`
+ `PreyAFNetworkReachabilityStatusNotReachable`
  The `baseURL` host cannot be reached.
 
- `AFNetworkReachabilityStatusReachableViaWWAN`
+ `PreyAFNetworkReachabilityStatusReachableViaWWAN`
  The `baseURL` host can be reached via a cellular connection, such as EDGE or GPRS.
 
- `AFNetworkReachabilityStatusReachableViaWiFi`
+ `PreyAFNetworkReachabilityStatusReachableViaWiFi`
  The `baseURL` host can be reached via a Wi-Fi connection.
 
  ### Keys for Notification UserInfo Dictionary
@@ -533,19 +533,19 @@ extern NSString * AFQueryStringFromParametersWithEncoding(NSDictionary *paramete
  @warning In order for network reachability to be monitored, include the `SystemConfiguration` framework in the active target's "Link Binary With Library" build phase, and add `#import <SystemConfiguration/SystemConfiguration.h>` to the header prefix of the project (`Prefix.pch`).
  */
 #ifdef _SYSTEMCONFIGURATION_H
-extern NSString * const AFNetworkingReachabilityDidChangeNotification;
-extern NSString * const AFNetworkingReachabilityNotificationStatusItem;
+extern NSString * const PreyAFNetworkingReachabilityDidChangeNotification;
+extern NSString * const PreyAFNetworkingReachabilityNotificationStatusItem;
 #endif
 
 #pragma mark -
 
-extern NSUInteger const kAFUploadStream3GSuggestedPacketSize;
-extern NSTimeInterval const kAFUploadStream3GSuggestedDelay;
+extern NSUInteger const kPreyAFUploadStream3GSuggestedPacketSize;
+extern NSTimeInterval const kPreyAFUploadStream3GSuggestedDelay;
 
 /**
- The `AFMultipartFormData` protocol defines the methods supported by the parameter in the block argument of `AFHTTPClient -multipartFormRequestWithMethod:path:parameters:constructingBodyWithBlock:`.
+ The `PreyAFMultipartFormData` protocol defines the methods supported by the parameter in the block argument of `AFHTTPClient -multipartFormRequestWithMethod:path:parameters:constructingBodyWithBlock:`.
  */
-@protocol AFMultipartFormData
+@protocol PreyAFMultipartFormData
 
 /**
  Appends the HTTP header `Content-Disposition: file; filename=#{generated filename}; name=#{name}"` and `Content-Type: #{generated mimeType}`, followed by the encoded file data and the multipart form boundary.

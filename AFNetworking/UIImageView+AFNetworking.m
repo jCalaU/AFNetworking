@@ -48,8 +48,8 @@ static char kAFImageRequestOperationObjectKey;
 
 @implementation UIImageView (AFNetworking)
 
-- (AFHTTPRequestOperation *)af_imageRequestOperation {
-    return (AFHTTPRequestOperation *)objc_getAssociatedObject(self, &kAFImageRequestOperationObjectKey);
+- (PreyAFHTTPRequestOperation *)af_imageRequestOperation {
+    return (PreyAFHTTPRequestOperation *)objc_getAssociatedObject(self, &kAFImageRequestOperationObjectKey);
 }
 
 - (void)af_setImageRequestOperation:(AFImageRequestOperation *)imageRequestOperation {
@@ -123,7 +123,7 @@ static char kAFImageRequestOperationObjectKey;
 		requestOperation.allowsInvalidSSLCertificate = YES;
 #endif
 		
-        [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [requestOperation setCompletionBlockWithSuccess:^(PreyAFHTTPRequestOperation *operation, id responseObject) {
             if ([urlRequest isEqual:[self.af_imageRequestOperation request]]) {
                 if (self.af_imageRequestOperation == operation) {
                     self.af_imageRequestOperation = nil;
@@ -137,7 +137,7 @@ static char kAFImageRequestOperationObjectKey;
             }
 
             [[[self class] af_sharedImageCache] cacheImage:responseObject forRequest:urlRequest];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(PreyAFHTTPRequestOperation *operation, NSError *error) {
             if ([urlRequest isEqual:[self.af_imageRequestOperation request]]) {
                 if (self.af_imageRequestOperation == operation) {
                     self.af_imageRequestOperation = nil;
